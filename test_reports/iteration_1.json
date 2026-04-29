@@ -1,0 +1,37 @@
+{
+  "summary": "Tested Night Wave Collective backend (36 pytest tests, all pass after minor test fixes) and frontend critical flows via Playwright. Backend APIs (auth, public, bookings, memberships, events CRUD, assignments, announcements, admin endpoints, admin-only authorization, profile updates) all work correctly. Frontend home/gallery/events/booking/register/login/admin/portal flows work. ProtectedRoute correctly redirects anon to /login and non-admin from /admin to /portal. Booking submission shows success card with auto-response. Gallery lightbox opens. Membership Apply shows 'Application submitted' toast (or login prompt if anon). Admin login redirects to /admin and overview tab renders. One potential issue: after clicking Bookings admin tab, follow-up tab navigation became unresponsive in one test run (possibly unrelated test-script flakiness; UI shows all 6 tabs visible).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/auth/login (brute force)", "issue": "Lockout uses request.client.host as part of identifier. Behind k8s ingress the source IP can vary across requests, so MAX_FAILED=5 effectively requires more than 5 wrong attempts to lock out a given (ip,email) pair (observed 8 attempts in our test). Lockout still works but is less strict than intended. Consider keying lockout on email only (or X-Forwarded-For)."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Admin tabs", "issue": "After clicking 'admin-tab-bookings', subsequent tab elements ('admin-tab-events', etc.) became unreachable in one Playwright run. The first overview tab and direct admin-tab-overview click work fine and screenshot shows all 6 tabs rendered. Could be a click-handler/state issue when bookings panel mounts or could be flaky test. Main agent should validate by clicking each admin tab manually in browser and confirm panel switches without errors. Console also showed React warning about useEffect returning a Promise (an async useEffect somewhere).", "affected_selectors": ["[data-testid='admin-tab-events']", "[data-testid='admin-tab-members']", "[data-testid='admin-tab-assignments']", "[data-testid='admin-tab-announcements']"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "(Optional) Harden brute-force lockout: derive identifier from email only (or use X-Forwarded-For) so lockout is consistent behind a reverse proxy.",
+    "Investigate React warning: a useEffect is returning a Promise (async () => ...). Look at admin/portal pages — refactor to define inner async function and call it.",
+    "Verify admin tab switching works for bookings/events/members/assignments/announcements with no console errors after panel mounts. Possibly related to the useEffect promise warning."
+  ],
+  "critical_code_review_comments": [
+    "Brute-force identifier uses request.client.host which is unreliable behind ingress (see backend issue).",
+    "Some component uses useEffect(async () => ...) — produces React warning. Should be refactored to inner async function pattern.",
+    "Server.py is ~680 lines — borderline acceptable but could be split into routers/auth.py, routers/admin.py, routers/events.py for better maintainability.",
+    "PATCH /api/memberships/applications/{app_id} accepts status_value as a query param (not body); inconsistent with rest of API which uses Pydantic body.",
+    "Backend uses @app.on_event('startup'/'shutdown') which is deprecated in newer FastAPI in favor of lifespan context. Works but may warn."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py"],
+  "success_rate": {"backend": "100% (36/36)", "frontend": "~95% (admin tab switching not fully verified)"},
+  "test_credentials": "Admin: admin@nightwave.com / NightWave2026! — confirmed working. Member accounts created dynamically via /api/auth/register.",
+  "seed_data_creation": "Backend already seeded 4 DJs, 3 events (2 upcoming + 1 past), 9 gallery items, 1 announcement. Tests created multiple TEST_-prefixed bookings, members, applications, events, assignments, announcements (most cleaned up).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Run pytest /app/backend/tests/backend_test.py for regression. For UI, the admin tab navigation flakiness needs deeper investigation — open /admin after admin login and manually click each tab while watching browser console for the useEffect warning / errors.",
+  "rca of the issue": "Brute force lockout requires more than MAX_FAILED attempts because identifier=ip+email and request.client.host varies across requests behind the kubernetes ingress (different LB hops). Mitigation: change identifier to email-only (or use X-Forwarded-For first hop). The admin tab navigation test failure could not be reproduced consistently in the time available; admin overview/bookings tabs themselves work."
+}
