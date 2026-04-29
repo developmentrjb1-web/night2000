@@ -1,0 +1,96 @@
+{
+  "project_name": "Night Wave Collective",
+  "theme": "dark",
+  "archetype": "7 (Electric & Neon) / 5 (Jewel & Luxury) Fusion",
+  "emotional_tone": "Energetic, premium, immersive, bold, futuristic.",
+  "colors": {
+    "background_base": "#050505",
+    "surface_card": "#0D0D14",
+    "surface_glass": "rgba(255, 255, 255, 0.03)",
+    "primary": "#00E5FF",
+    "secondary": "#FF007F",
+    "accent": "#B026FF",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#A0A0AB",
+    "border_subtle": "rgba(255, 255, 255, 0.1)"
+  },
+  "typography": {
+    "heading_font": "Unbounded",
+    "body_font": "Outfit",
+    "font_pairings": "Unbounded for high-impact neon headings, Outfit for highly legible, modern geometric body text.",
+    "hierarchy": {
+      "h1": "text-5xl md:text-7xl font-black tracking-tighter uppercase",
+      "h2": "text-3xl md:text-5xl font-bold tracking-tight",
+      "h3": "text-2xl font-semibold tracking-tight",
+      "body": "text-base md:text-lg leading-relaxed font-light text-[#A0A0AB]",
+      "label": "text-sm font-medium tracking-[0.2em] uppercase text-[#00E5FF]"
+    }
+  },
+  "spacing_and_layout": {
+    "section_padding": "py-24 md:py-32",
+    "container": "max-w-7xl mx-auto px-6 md:px-12",
+    "grid_bento": "grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8",
+    "border_radius": "rounded-2xl"
+  },
+  "components": {
+    "cards": {
+      "base": "bg-[#0D0D14] border border-white/10 rounded-2xl overflow-hidden relative group",
+      "hover": "hover:border-[#00E5FF]/50 hover:shadow-[0_0_30px_rgba(0,229,255,0.15)] transition-all duration-500",
+      "glass": "bg-white/5 backdrop-blur-2xl border border-white/10"
+    },
+    "buttons": {
+      "primary": "bg-[#00E5FF] text-black font-bold uppercase tracking-wider px-8 py-4 rounded-full hover:bg-white hover:shadow-[0_0_20px_rgba(0,229,255,0.6)] transition-all duration-300",
+      "secondary": "border border-white/20 text-white font-medium px-8 py-4 rounded-full hover:border-[#FF007F] hover:text-[#FF007F] hover:bg-[#FF007F]/10 transition-all duration-300",
+      "ghost": "text-white/70 hover:text-white transition-colors"
+    },
+    "header": {
+      "style": "fixed top-0 w-full z-50 bg-black/50 backdrop-blur-xl border-b border-white/5 transition-all"
+    },
+    "floating_messenger": {
+      "style": "fixed bottom-8 right-8 z-50 w-16 h-16 bg-[#FF007F] text-white rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,0,127,0.4)] hover:scale-110 transition-transform cursor-pointer"
+    }
+  },
+  "motion_and_interactions": {
+    "hover_states": "Elements should lift slightly (-translate-y-1) and cast a neon colored ambient shadow on hover.",
+    "page_transitions": "Fade in with a slight upward translation (framer-motion opacity: 0 -> 1, y: 20 -> 0).",
+    "scroll_effects": "Use parallax on background images. Large typography should use text reveal animations on scroll.",
+    "soundwaves": "Use CSS keyframe animations (scale-y) on thin vertical bars to simulate equalizer/soundwaves in the hero section."
+  },
+  "media_and_images": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1764258559789-40cf1eb2025f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwxfHxuZW9uJTIwYWJzdHJhY3QlMjB3YXZlJTIwZGFya3xlbnwwfHx8fDE3Nzc0NTE1ODl8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract pink/neon lines against dark space. Use with black gradient overlay (bg-black/60) to ensure text legibility."
+    },
+    "event_crowd_laser": {
+      "url": "https://images.pexels.com/photos/1494666/pexels-photo-1494666.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Electrifying concert with laser lights. Perfect for the Upcoming Events or Gallery hero."
+    },
+    "featured_dj_1": {
+      "url": "https://images.unsplash.com/photo-1606843225535-b5fb8ce46bc2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzV8MHwxfHNlYXJjaHwxfHxkaiUyMHBsYXlpbmclMjBpbiUyMG5pZ2h0Y2x1YnxlbnwwfHx8fDE3Nzc0NTE1NzV8MA&ixlib=rb-4.1.0&q=85",
+      "description": "DJ in black crew neck playing mixer. Use in Featured DJs cards."
+    },
+    "featured_dj_2": {
+      "url": "https://images.pexels.com/photos/9005442/pexels-photo-9005442.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "DJ playing music in vibrant nightclub. Use in Featured DJs cards."
+    },
+    "club_interior": {
+      "url": "https://images.pexels.com/photos/6032557/pexels-photo-6032557.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Sleek, modern bar/club counter with blue neon. Use as background for Memberships or Booking Section."
+    },
+    "party_crowd": {
+      "url": "https://images.unsplash.com/photo-1578946956849-3b335519f039?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwxfHxjb25jZXJ0JTIwY3Jvd2QlMjBsYXNlciUyMGxpZ2h0c3xlbnwwfHx8fDE3Nzc0NTE1NzV8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Crowd partying with red/pink stage lights. Use in Gallery grid."
+    }
+  },
+  "testing": {
+    "requirements": "All interactive elements (buttons, inputs, cards) MUST include a 'data-testid' attribute (e.g., data-testid='hero-cta-button')."
+  },
+  "instructions_to_main_agent": [
+    "Use pure HTML/Tailwind for marketing layout sections (Hero, Gallery, Services) to ensure full creative control over overlapping grids and bento boxes.",
+    "Use pure Shadcn UI ONLY for the Booking Form, Member Login Dialog, and Admin Dashboard components (Data Tables, Inputs, Modals). Customize the Shadcn component borders to match border-white/10 and bg-[#0D0D14].",
+    "Install Google Fonts: 'Unbounded' (Headings) and 'Outfit' (Body). Do NOT use Inter.",
+    "Implement an animated CSS equalizer/soundwave effect behind the main Hero tagline.",
+    "Strictly follow the color hex codes. No pure white backgrounds anywhere in the design. Dark mode is permanent.",
+    "Ensure the sticky header has 'backdrop-blur-xl' and 'bg-black/50' so scrolling content is blurred underneath."
+  ]
+}
