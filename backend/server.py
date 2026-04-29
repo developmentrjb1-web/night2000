@@ -242,15 +242,19 @@ async def register(body: RegisterIn, response: Response):
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     await db.users.insert_one(doc)
-    set_auth_cookies(response, create_access_token(user_id, email), create_refresh_token(user_id))
-    return public_user(doc)
+    access = create_access_token(user_id, email)
+    refresh = create_refresh_token(user_id)
+    set_auth_cookies(response, access, refresh)
+    out = public_user(doc)
+    out["access_token"] = access
+    out["refresh_token"] = refresh
+    return out
 
 
 @api.post("/auth/login")
 async def login(body: LoginIn, request: Request, response: Response):
     email = body.email.lower().strip()
-    ip = request.client.host if request.client else "unknown"
-    identifier = f"{ip}:{email}"
+    identifier = email
 
     rec = await db.login_attempts.find_one({"identifier": identifier})
     if rec and rec.get("count", 0) >= MAX_FAILED:
@@ -271,8 +275,13 @@ async def login(body: LoginIn, request: Request, response: Response):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     await db.login_attempts.delete_one({"identifier": identifier})
-    set_auth_cookies(response, create_access_token(user["id"], user["email"]), create_refresh_token(user["id"]))
-    return public_user(user)
+    access = create_access_token(user["id"], user["email"])
+    refresh = create_refresh_token(user["id"])
+    set_auth_cookies(response, access, refresh)
+    out = public_user(user)
+    out["access_token"] = access
+    out["refresh_token"] = refresh
+    return out
 
 
 @api.post("/auth/logout")

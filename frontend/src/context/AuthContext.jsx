@@ -1,18 +1,23 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { api, formatApiErrorDetail } from "@/lib/api";
+import { api, formatApiErrorDetail, setToken, getToken } from "@/lib/api";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);   // null = checking, false = anonymous, object = logged-in
+  const [user, setUser] = useState(null); // null = checking, false = anonymous, object = logged-in
   const [error, setError] = useState("");
 
   const refresh = useCallback(async () => {
+    if (!getToken()) {
+      setUser(false);
+      return false;
+    }
     try {
       const { data } = await api.get("/auth/me");
       setUser(data);
       return data;
     } catch {
+      setToken(null);
       setUser(false);
       return false;
     }
@@ -26,6 +31,7 @@ export function AuthProvider({ children }) {
     setError("");
     try {
       const { data } = await api.post("/auth/login", { email, password });
+      if (data.access_token) setToken(data.access_token);
       setUser(data);
       return data;
     } catch (e) {
@@ -39,6 +45,7 @@ export function AuthProvider({ children }) {
     setError("");
     try {
       const { data } = await api.post("/auth/register", payload);
+      if (data.access_token) setToken(data.access_token);
       setUser(data);
       return data;
     } catch (e) {
@@ -52,6 +59,7 @@ export function AuthProvider({ children }) {
     try {
       await api.post("/auth/logout");
     } catch (e) { /* ignore */ }
+    setToken(null);
     setUser(false);
   };
 

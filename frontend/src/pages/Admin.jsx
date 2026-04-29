@@ -75,7 +75,7 @@ function Overview() {
 
 function Bookings() {
   const [list, setList] = useState([]);
-  const load = () => api.get("/bookings").then(({ data }) => setList(data)).catch(() => {});
+  const load = () => { api.get("/bookings").then(({ data }) => setList(data)).catch(() => {}); };
   useEffect(load, []);
   const setStatus = async (id, status) => {
     try {
@@ -123,7 +123,7 @@ function Bookings() {
 function Events() {
   const [list, setList] = useState([]);
   const [form, setForm] = useState({ name: "", date: "", time: "", venue: "", description: "", lineup: "", image_url: "", status: "upcoming" });
-  const load = () => api.get("/events").then(({ data }) => setList(data)).catch(() => {});
+  const load = () => { api.get("/events").then(({ data }) => setList(data)).catch(() => {}); };
   useEffect(load, []);
   const change = (k) => (e) => setForm((s) => ({ ...s, [k]: e.target.value }));
   const create = async (e) => {
